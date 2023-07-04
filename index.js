@@ -1,4 +1,5 @@
 window.addEventListener("DOMContentLoaded", async () => {
+    const canvasContainer = document.getElementById("glcanvas-container")
     const canvas = document.getElementById("glcanvas")
 
     function setCanvasSize() {
@@ -9,13 +10,16 @@ window.addEventListener("DOMContentLoaded", async () => {
     setCanvasSize()
     window.addEventListener("resize", () => setCanvasSize())
 
-
     const gl = canvas.getContext("webgl")
-    if(!gl) return
+    if(!gl) {
+        canvasContainer.innerHTML = "Unable to create WebGL context"
+        return
+    }
 
 
     async function createShaderProgram() {
-        const url = "http://localhost:8000"
+        //const url = "http://192.168.50.23:8000"
+        const url = "https://vereena.gay"
         const vert = await (await fetch(`${url}/shaders/vert.glsl`)).text()
         const frag = await (await fetch(`${url}/shaders/frag.glsl`)).text()
 
