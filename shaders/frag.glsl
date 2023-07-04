@@ -8,27 +8,6 @@ precision mediump float;
 uniform vec2 size;
 uniform float time;
 
-//uniform sampler2D palettes;
-//uniform vec2 palettesSize;
-
-/*
-vec3 samplePalette(int palette, int index) {
-    vec2 uv = vec2(
-        (float(index + 1) + 0.5) / palettesSize.x,
-        (float(palette) + 0.5) / palettesSize.y
-    );
-    return texture2D(palettes, uv).xyz;
-}
-
-int paletteSize(int palette) {
-    vec2 uv = vec2(
-        0,
-        (float(palette) + 0.5) / palettesSize.y
-    );
-    return int(texture2D(palettes, uv).x * 255.0);
-}
-*/
-
 
 vec3 TRANS_BLUE = vec3(0.357,0.808,0.98);
 vec3 TRANS_PINK = vec3(0.961,0.663,0.722);
@@ -56,6 +35,11 @@ float sdUnion(float a, float b) { return min(a, b); }
 float sdIntersection(float a, float b) { return max(a, b); }
 float sdSubtract(float a, float b) { return sdIntersection(a, -b); }
 
+float sdSmoothUnion(float a, float b, float k) {
+    float h = clamp(0.5 + 0.5 * (b - a) / k, 0.0, 1.0);
+    return mix(b, a, h) - k * h * (1.0 - h);
+}
+
 
 vec2 rotate(vec2 p, float a) {
     float s = sin(a);
@@ -73,9 +57,9 @@ void main() {
 
     vec3 color = trans(sin2(time));
 
-    float a = sdCircle(uv - vec2(0.3, 0.0), sin2(time) / 9.0);
-    float b = sdCircle(uv - vec2(-0.3, 0.0), cos2(time) / 9.0);
-    float d = sdUnion(a, b);
+    float a = sdCircle(uv - vec2(0.1 + cos(time) / 4.0, sin(time * 1.2) / 2.0), sin2(time) / 5.0);
+    float b = sdCircle(uv - vec2(-0.1 + sin(time) / 4.0, cos(time) / 2.0), cos2(time) / 5.0);
+    float d = sdSmoothUnion(a, b, 0.05);
 
     //d = sin(d*10.0 + time)/10.0;
     d = abs(d);
