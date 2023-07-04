@@ -1,4 +1,14 @@
 body {
     color: #ffffff;
     background-color: #202020;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+#glcanvas-container {
+    text-align: center;
+}
+
+#glcanvas {
+    display: block;
 }
