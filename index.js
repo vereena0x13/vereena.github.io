@@ -19,7 +19,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     async function createShaderProgram() {
         //const url = "http://192.168.50.23:8000"
-        const url = "https://vereena.gay"
+        const url = "https://vereena.inara.gay"
         const vert = await (await fetch(`${url}/shaders/vert.glsl`)).text()
         const frag = await (await fetch(`${url}/shaders/frag.glsl`)).text()
 
